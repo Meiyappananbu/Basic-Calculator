@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>var val1="";
+        var e="";
+        var operand=['+','-','/','x'];
+        function number(v){
+            if(v=="s" && val1!=""){
+                val1+='0';
+                dis();
+            }
+            else if(v=='d' && val1!=""){
+                val1+='00';
+                dis();
+            }
+            else if(v=='dot'){
+                var temp=Array.from(val1);
+                var count=Number(0);
+                for(var i=0;i<temp.length;i++){
+                    if(temp[i]=='.'){
+                        count+=Number(1);
+                    }
+                }
+                if(count==0){
+                    val1+='.';
+                }
+                dis();
+            }
+            else if(v<="9"){
+                val1+=String(v);
+                dis();
+            }
+        }
+        function operation(val){
+            temp=cal();
+            if(temp!="NO"){
+                document.getElementById("display1").innerHTML=temp;
+            }
+            else{ 
+                document.getElementById("display1").innerHTML=document.getElementById("display3").innerHTML;
+            }
+            val1="";
+            document.getElementById("display2").innerHTML=operand[val];
+            document.getElementById("display3").innerHTML="";
+        }
+        function cal(){
+            v1=document.getElementById("display1").innerHTML;
+            v2=document.getElementById("display2").innerHTML;
+            v3=document.getElementById("display3").innerHTML;
+            if(v1!="" && v2!="" && v3!="")
+            {
+                if(v2=="+"){
+                    return Number(v1)+Number(v3);
+                }
+                else if(v2=="-"){
+                    return Number(v1)-Number(v3);
+                }
+                else if(v2=="x"){
+                    return Number(v1)*Number(v3);
+                }
+                else if(v2=="/"){
+                    return Number(v1)/Number(v3);
+                }
+            }
+            else{
+                return "NO";
+            }
+        }
+        function equal(){
+            temp=cal();
+            var v1=document.getElementById("display1").innerHTML;
+            var v2=document.getElementById("display2").innerHTML;
+            if(temp!="NO"){
+                document.getElementById("display3").innerHTML=temp;
+            }
+            else if(v1=="" && v2==""){
+                document.getElementById("display3").innerHTML=document.getElementById("display3").innerHTML;
+            }
+            else{
+                document.getElementById("display3").innerHTML=document.getElementById("display1").innerHTML;
+            }
+            val1=document.getElementById("display3").innerHTML;
+            document.getElementById("display2").innerHTML="";
+            document.getElementById("display1").innerHTML="";
+        }
+        function per(){
+            var v1=document.getElementById("display1").innerHTML;
+            var v2=document.getElementById("display2").innerHTML;
+            if(v1=="" && v2=="")
+            {
+            val1=document.getElementById("display3").innerHTML;
+            }
+            else{
+                equal();
+            }
+            val1=Number(val1)/100;
+            document.getElementById("display3").innerHTML=val1;
+        }
+        function clr(){
+            document.location.reload();
+        }
+        function del(){
+            var v1=document.getElementById("display1").innerHTML;
+            var v2=document.getElementById("display2").innerHTML;
+            var v3=document.getElementById("display3").innerHTML;
+            if(v3!=""){
+                txt="";
+                temp=Array.from(v3);
+                for(i=0;i<temp.length-1;i++){
+                    txt+=temp[i];
+                }
+                document.getElementById("display3").innerHTML=txt
+                val1=txt;
+            }
+            else if(v2!="")
+            {
+                document.getElementById("display2").innerHTML="";
+            }
+            else if(v1!="")
+            {
+                txt="";
+                temp=Array.from(v1);
+                for(i=0;i<temp.length-1;i++){
+                    txt+=temp[i];
+                }
+                document.getElementById("display1").innerHTML=txt;   
+            }
+            else{
+                document.getElementById("display3").innerHTML=0;
+                val1="";
+            }
+        }
+        function dis(){
+            var temp=Array.from(val1);
+            if(temp.includes('e')==true){
+                document.getElementById("display3").innerHTML=0;
+                val1="";
+            }
+            else{
+                document.getElementById("display3").innerHTML=val1;
+            }
+        }
+        function final(){
+            equal()   
+            temp=Number(document.getElementById("display3").innerHTML).toExponential(5)
+            temp=String(temp)
+            t=Array.from(temp)
+            if(t[Number(t.length)-1]=="0"){ 
+                txt=""
+                for(i=0;i<t.length-3;i++){
+                    txt+=t[i]
+                }
+            alert("Final answer: "+txt)
+            }
+            else{
+            alert("Final answer: "+temp)
+            }
+        }
+        </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Calculator</title>
+    <style>
+        html{
+    padding:0;
+    margin:0;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+button{
+    background-color: white;
+    border:1px solid white;
+    padding:7px;
+    width:70px;
+    border-radius: 8px;
+    font-size: 20px;
+    box-shadow: inset 5px 5px 10px rgb(226, 221, 221);
+    cursor: pointer;
+    margin-left: 7px;
+}
+p{
+    margin-top: -10px;
+    font-size: small;
+    padding: 0px;
+}
+#dis{
+    float:right;
+    padding:20px;
+    width:320px;
+    text-align: right;
+    font-size: 40px;
+    cursor: default;
+    height:120px;
+}
+body{
+    border:1px solid grey;
+    padding:20px;
+    border-radius: 8px;
+    box-shadow: 5px 5px 10px rgb(226, 221, 221);
+}
+#display3{
+    overflow: auto;
+}
+.dev{
+    text-align: center;
+}
+.final{
+    margin-left: 65px;
+    width:200px;
+}
+.small{
+    font-size: x-small;
+}
+    </style>
+</head>
+<body>
+    <form>
+        <button type="button" id="dis">
+            <p id="display1"></p>
+            <p id="display2"></p>
+            <div id="display3">0</div>
+        </button>
+        <br><br><br><br><br><br><br><br>
+        <button type="button" onclick="clr()">Clr</button>
+        <button type="button" onclick="per()">%</button>
+        <button type="button" onclick="del()">Del</button>
+        <button type="button" onclick="operation(2)">÷</button><br><br>
+        <button type="button" onclick="number(7)">7</button>
+        <button type="button" onclick="number(8)">8</button>
+        <button type="button" onclick="number(9)">9</button>
+        <button type="button" onclick="operation(3)">x</button><br><br>
+        <button type="button" onclick="number(4)">4</button>
+        <button type="button" onclick="number(5)">5</button>
+        <button type="button" onclick="number(6)">6</button>
+        <button type="button" onclick="operation(1)">-</button><br><br>
+        <button type="button" onclick="number(1)">1</button>
+        <button type="button" onclick="number(2)">2</button>
+        <button type="button" onclick="number(3)">3</button>
+        <button type="button" onclick="operation(0)">+</button><br><br>
+        <button type="button" onclick="number('d')">00</button>
+        <button type="button" onclick="number('s')">0</button>
+        <button type="button" onclick="number('dot')">.</button>
+        <button type="button" onclick="equal()">=</button><br><br>
+        <button type="button" onclick="final()" class="final">Final answer<br><span class="small">(with roundoff / exponential)</span></button><br><br><br>
+    </form>
+    <p class="dev">Developed by <a href="https://www.linkedin.com/in/meiyappan-a-23a697206">Meiyappan Anbu</a> </p>
+</body>
+</html>
